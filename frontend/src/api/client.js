@@ -3,7 +3,7 @@ import { mockStats, mockEvents } from '../data/mockEvents.js';
 import { mockBuses } from '../data/mockBuses.js';
 import { mockVehicleCounts, mockCongestionTrend } from '../data/mockAnalytics.js';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE,

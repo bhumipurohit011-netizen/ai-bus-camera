@@ -1,9 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from typing import List, Optional
 from pydantic import BaseModel
 import time
 import base64
+import os
 
 def generate_svg_evidence(evt_id: str, title: str, evt_type: str = "pothole", severity: str = "Urgent", depth: str = "6.5cm", width: str = "65cm", bus_id: str = "BUS-017") -> str:
     is_pothole = evt_type == "pothole"
@@ -113,6 +116,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(STATIC_DIR):
+    assets_path = os.path.join(STATIC_DIR, "assets")
+    if os.path.exists(assets_path):
+        app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
 
 # -----------------
 # DATA MODELS
@@ -536,14 +545,22 @@ MOCK_REPORTS = {
 # -----------------
 # API ENDPOINTS
 # -----------------
-@app.get("/")
-def read_root():
+@app.get("/api/health")
+@app.get("/api")
+def api_status():
     return {
         "platform": "AI-Powered Urban Intelligence Platform",
         "status": "Operational",
         "version": "1.1.0",
         "docs_url": "/docs",
     }
+
+@app.get("/")
+def read_root():
+    index_file = os.path.join(STATIC_DIR, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return api_status()
 
 @app.get("/api/stats")
 def get_stats():
@@ -696,3 +713,18 @@ def analyze_video(req: VideoAnalysisRequest):
         "roadHealthScore": 68.5,
         "detections": detections,
     }
+
+if os.path.exists(STATIC_DIR):
+    @app.get("/{full_path:path}")
+    def serve_frontend_spa(full_path: str):
+        if full_path.startswith("api/") or full_path in ["docs", "redoc", "openapi.json"]:
+            raise HTTPException(status_code=404, detail="Not Found")
+        
+        target_file = os.path.join(STATIC_DIR, full_path)
+        if full_path and os.path.exists(target_file) and os.path.isfile(target_file):
+            return FileResponse(target_file)
+        
+        index_file = os.path.join(STATIC_DIR, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+        return api_status()
