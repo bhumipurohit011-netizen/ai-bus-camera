@@ -1,0 +1,63 @@
+export const mockBuses = [
+  {
+    id: "BUS-001",
+    route: "Route 104 — Downtown Express",
+    status: "Active",
+    statusColor: "bg-primary",
+    badgeBg: "bg-surface-container-high",
+    badgeColor: "text-primary",
+    metricTop: "60 FPS",
+    metricTopColor: "text-primary",
+    metricBottom: "Edge Model v4",
+    lat: 12.9720,
+    lng: 77.5930,
+    speed: 34,
+    heading: 85
+  },
+  {
+    id: "BUS-002",
+    route: "Route 42 — Metro Crossline",
+    status: "Active",
+    statusColor: "bg-primary",
+    badgeBg: "bg-surface-container-high",
+    badgeColor: "text-primary",
+    metricTop: "Optimal",
+    metricTopColor: "text-on-surface",
+    metricBottom: "Stream Sync OK",
+    lat: 12.9775,
+    lng: 77.6045,
+    speed: 28,
+    heading: 120
+  },
+  {
+    id: "BUS-003",
+    route: "Route 88 — South Industrial",
+    status: "Active",
+    statusColor: "bg-primary",
+    badgeBg: "bg-surface-container-high",
+    badgeColor: "text-primary",
+    metricTop: "Optimal",
+    metricTopColor: "text-on-surface",
+    metricBottom: "Stream Sync OK",
+    lat: 12.9645,
+    lng: 77.6095,
+    speed: 40,
+    heading: 210
+  },
+  {
+    id: "BUS-004",
+    route: "Route 12 — North Terminal",
+    status: "Offline",
+    statusColor: "bg-outline",
+    badgeBg: "bg-surface-container-high",
+    badgeColor: "text-on-surface-variant",
+    metricTop: "In Depot",
+    metricTopColor: "text-on-surface-variant",
+    metricBottom: "Maintenance",
+    isOffline: true,
+    lat: 12.9860,
+    lng: 77.5880,
+    speed: 0,
+    heading: 0
+  }
+];
